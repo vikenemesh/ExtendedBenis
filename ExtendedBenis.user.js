@@ -1,13 +1,13 @@
 ﻿// ==UserScript==
-// @name        ExtendedBenis
+// @name		ExtendedBenis
 // @author		vikenzor
-// @namespace   vehacks
-// @include     *pr0gramm.com*
-// @version     1.3.5
-// @updateURL http://vikenemesh.groupc.de/files/ExtendedBenis.user.js
-// @copyright 2014+, vikenzor
+// @namespace	vehacks
+// @include		*pr0gramm.com*
+// @version		1.4.0
+// @updateURL	https://github.com/vikenemesh/ExtendedBenis/raw/master/ExtendedBenis.user.js
+// @copyright	2014+, vikenzor
 // @description	Zeigt auf pr0gramm.com die Ups und Downs eines Bildes an.
-// @grant       none
+// @grant		none
 // ==/UserScript==
 
 $(function() {
