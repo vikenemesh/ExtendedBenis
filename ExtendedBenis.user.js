@@ -3,8 +3,9 @@
 // @author		vikenzor
 // @namespace	vehacks
 // @include		*pr0gramm.com*
-// @version		1.4.0
+// @version		1.4.1
 // @updateURL	https://github.com/vikenemesh/ExtendedBenis/raw/master/ExtendedBenis.user.js
+// @downloadURL	https://github.com/vikenemesh/ExtendedBenis/raw/master/ExtendedBenis.user.js
 // @copyright	2014+, vikenzor
 // @description	Zeigt auf pr0gramm.com die Ups und Downs eines Bildes an.
 // @grant		none
