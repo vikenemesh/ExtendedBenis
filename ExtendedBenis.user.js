@@ -27,11 +27,11 @@ $(function() {
 	var tmpl_new = tmpl_old.replace(/(<\?js print.*?\?><\/span>)/, "$1 "+tmpl_hack);
 
 	function addGlobalStyle(css) {
-		var head = document.getElementsByTagName("head")[0];
+		var head = document.getElementsByTagName('head')[0];
 		if (!head)
 			return;
-		var style = document.createElement("style");
-		style.type = "text/css";
+		var style = document.createElement('style');
+		style.type = 'text/css';
 		style.innerHTML = css;
 		head.appendChild(style);
 	}
