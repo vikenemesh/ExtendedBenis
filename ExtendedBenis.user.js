@@ -12,8 +12,17 @@
 // ==/UserScript==
 
 $(function() {
-	var tmpl_css = ".ext-vote { color: #BBB; }";
+	var tmpl_css =
+	'.ext-vote { color: #BBB; } ' +
+	'.ext-bar { overflow: hidden; } ' +
+	'.ext-bar-item { height: 2px; float: left; } ' +
+	'#ext-bar-item-up { background-color: #A7D713; } ' +
+	'#ext-bar-item-down { background-color: #6C432B; ';
+
 	var tmpl_hack = '<span class="ext-vote">{item.up} Up, {item.down} Down</span>';
+
+	tmpl_hack += '<div class="ext-bar"><div id="ext-bar-item-up">&nbsp;</div><div id="ext-bar-item-down">&nbsp;</div></div>';
+
 	var tmpl_old = p.View.Stream.Item.prototype.template;
 	var tmpl_new = tmpl_old.replace(/(<\?js print.*?\?><\/span>)/, "$1 "+tmpl_hack);
 
