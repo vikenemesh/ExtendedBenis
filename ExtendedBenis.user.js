@@ -8,6 +8,7 @@
 // @downloadURL	https://github.com/vikenemesh/ExtendedBenis/raw/master/ExtendedBenis.user.js
 // @copyright	2014+, vikenzor
 // @description	Zeigt auf pr0gramm.com die Ups und Downs eines Bildes an.
+// @icon		http://pr0gramm.com/media/pr0gramm-favicon.png
 // @grant		none
 // ==/UserScript==
 
