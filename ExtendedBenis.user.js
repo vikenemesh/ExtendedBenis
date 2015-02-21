@@ -3,7 +3,7 @@
 // @author		vikenzor, holzmaster
 // @namespace	vehacks
 // @include		*pr0gramm.com*
-// @version		1.5.1
+// @version		1.6
 // @updateURL	https://github.com/vikenemesh/ExtendedBenis/raw/master/ExtendedBenis.user.js
 // @downloadURL	https://github.com/vikenemesh/ExtendedBenis/raw/master/ExtendedBenis.user.js
 // @copyright	2014+, vikenzor
@@ -22,7 +22,7 @@ $(function() {
 	var tmpl_css =
 		'.ext-vote { color: #BBB; } ' +
 		'.ext-bar { overflow: hidden; } ' +
-		'.ext-bar div { height: 2px; float: left; transition: width 0.1s ease-out; } ' +
+		'.ext-bar div { height: 2px; float: left; transition: width 0.2s ease-out; } ' +
 		'.ext-bar-item-up { background-color: #A7D713; } ' +
 		'.ext-bar-item-down { background-color: #6C432B; } ' +
 		'.item-vote * { text-align: left !important; } ';
@@ -37,33 +37,34 @@ $(function() {
 	// Overwrite the "Class" with an extension of itself
 	p.View.Stream.Item = p.View.Stream.Item.extend({
 		template: tmpl_new,
+		// Extend show()
 		show: function(rowIndex, itemData, defaultHeight, jumpToComment) {
-			this.parent(rowIndex, itemData, defaultHeight, jumpToComment);
-			this._updateBar(itemData.up, itemData.down);
+			this.parent( rowIndex, itemData, defaultHeight, jumpToComment );
+			this._updateBar( itemData.up, itemData.down );
 		},
-		_updateBenis: function(up, down) {
-			$('.ext-vote').text( up + ' Up, ' + down + ' Down' );
-			this._updateBar( up, down );
+		// Extend vote(), update our details and bar
+		vote: function(ev, vote) {
+			console.log("this = ", this);
+			this.parent( ev, vote );
+			this._updateBenis();
 		},
-		_updateBar: function(up, down) {
-			var totalVotes = up + down;
-			if( !totalVotes ) {
+		_updateBenis: function() {
+			$('.ext-vote').text( this.data.item.up + ' Up, ' + this.data.item.down + ' Down' );
+			this._updateBar();
+		},
+		_updateBar: function() {
+			var total = this.data.item.up + this.data.item.down;
+			if( !total ) {
 				$('.ext-bar').css( 'opacity', 0 );
 			} else {
 				$('.ext-bar').css( 'opacity', 1 );
 
-				var upWidth = up / totalVotes * 100;
-				var downWidth = 100.0 - upWidth;
+				var ratio_up = this.data.item.up / total * 100;
+				var ratio_down = 100.0 - ratio_up;
 
-				$('.ext-bar-item-up').css( 'width', upWidth + "%" );
-				$('.ext-bar-item-down').css( 'width', downWidth + "%" );
+				$('.ext-bar-item-up').css( 'width', ratio_up + "%" );
+				$('.ext-bar-item-down').css( 'width', ratio_down + "%" );
 			}
-		},
-		vote: function(ev, vote) {
-			this.parent(ev, vote);
-			var cachedItem = this.stream.items[this.data.item.id];
-			this._updateBenis( cachedItem.up, cachedItem.down );
-			return false;
 		}
 	});
 
