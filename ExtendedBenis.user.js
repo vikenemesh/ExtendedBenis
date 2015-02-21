@@ -22,7 +22,7 @@ $(function() {
 	var tmpl_css =
 		'.ext-vote { color: #BBB; } ' +
 		'.ext-bar { overflow: hidden; } ' +
-		'.ext-bar div { height: 2px; float: left; } ' +
+		'.ext-bar div { height: 2px; float: left; transition: width 0.1s ease-out; } ' +
 		'.ext-bar-item-up { background-color: #A7D713; } ' +
 		'.ext-bar-item-down { background-color: #6C432B; } ' +
 		'.item-vote * { text-align: left !important; } ';
@@ -39,19 +39,31 @@ $(function() {
 		template: tmpl_new,
 		show: function(rowIndex, itemData, defaultHeight, jumpToComment) {
 			this.parent(rowIndex, itemData, defaultHeight, jumpToComment);
-
-			var totalVotes = itemData.up + itemData.down;
+			this._updateBar(itemData.up, itemData.down);
+		},
+		_updateBenis: function(up, down) {
+			$('.ext-vote').text( up + ' Up, ' + down + ' Down' );
+			this._updateBar( up, down );
+		},
+		_updateBar: function(up, down) {
+			var totalVotes = up + down;
 			if( !totalVotes ) {
 				$('.ext-bar').css( 'opacity', 0 );
 			} else {
 				$('.ext-bar').css( 'opacity', 1 );
 
-				var upWidth = itemData.up / totalVotes * 100;
+				var upWidth = up / totalVotes * 100;
 				var downWidth = 100.0 - upWidth;
 
 				$('.ext-bar-item-up').css( 'width', upWidth + "%" );
 				$('.ext-bar-item-down').css( 'width', downWidth + "%" );
 			}
+		},
+		vote: function(ev, vote) {
+			this.parent(ev, vote);
+			var cachedItem = this.stream.items[this.data.item.id];
+			this._updateBenis( cachedItem.up, cachedItem.down );
+			return false;
 		}
 	});
 
