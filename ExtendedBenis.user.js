@@ -44,7 +44,6 @@ $(function() {
 		},
 		// Extend vote(), update our details and bar
 		vote: function(ev, vote) {
-			console.log("this = ", this);
 			this.parent( ev, vote );
 			this._updateBenis();
 		},
