@@ -17,7 +17,7 @@ $(function() {
 	'#ext-bar { overflow: hidden; } ' +
 	'#ext-bar div { height: 2px; float: left; } ' +
 	'#ext-bar-item-up { background-color: #A7D713; } ' +
-	'#ext-bar-item-down { background-color: #6C432B; ';
+	'#ext-bar-item-down { background-color: #6C432B; } ';
 
 	var tmpl_hack = '<span class="ext-vote">{item.up} Up, {item.down} Down</span>';
 	tmpl_hack += '<div id="ext-bar"><div id="ext-bar-item-up">&nbsp;</div><div id="ext-bar-item-down">&nbsp;</div></div>';
