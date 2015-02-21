@@ -15,12 +15,11 @@ $(function() {
 	var tmpl_css =
 	'.ext-vote { color: #BBB; } ' +
 	'.ext-bar { overflow: hidden; } ' +
-	'.ext-bar-item { height: 2px; float: left; } ' +
+	'.ext-bar div { height: 2px; float: left; } ' +
 	'#ext-bar-item-up { background-color: #A7D713; } ' +
 	'#ext-bar-item-down { background-color: #6C432B; ';
 
 	var tmpl_hack = '<span class="ext-vote">{item.up} Up, {item.down} Down</span>';
-
 	tmpl_hack += '<div class="ext-bar"><div id="ext-bar-item-up">&nbsp;</div><div id="ext-bar-item-down">&nbsp;</div></div>';
 
 	var tmpl_old = p.View.Stream.Item.prototype.template;
@@ -43,6 +42,21 @@ $(function() {
 		show: function(rowIndex, itemData, defaultHeight, jumpToComment) {
 			this.parent(rowIndex, itemData, defaultHeight, jumpToComment);
 			$('.item-vote *').css('text-align', 'left');
+
+			var totalVotes = itemData.up + itemData.down;
+			if(totalVotes == 0)
+			{
+				$('.ext-bar').css({opacity: 0});
+			}
+			else
+			{
+				$('.ext-bar').css({opacity: 1});
+
+				var upWidth = itemData.up / totalVotes * 100;
+				var downWidth = 100.0 - upWidth;
+				document.getElementById('ext-bar-item-up').style.width = upWidth + "%";
+				document.getElementById('ext-bar-item-down').style.width = downWidth + "%";
+			}
 		}
 	});
 });
