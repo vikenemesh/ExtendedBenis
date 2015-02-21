@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name		ExtendedBenis
-// @author		vikenzor
+// @author		vikenzor, holzmaster
 // @namespace	vehacks
 // @include		*pr0gramm.com*
 // @version		1.4.4
