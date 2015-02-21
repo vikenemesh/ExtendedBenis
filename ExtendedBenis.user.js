@@ -3,7 +3,7 @@
 // @author		vikenzor, holzmaster
 // @namespace	vehacks
 // @include		*pr0gramm.com*
-// @version		1.6
+// @version		1.6.1
 // @updateURL	https://github.com/vikenemesh/ExtendedBenis/raw/master/ExtendedBenis.user.js
 // @downloadURL	https://github.com/vikenemesh/ExtendedBenis/raw/master/ExtendedBenis.user.js
 // @copyright	2014+, vikenzor
@@ -44,7 +44,6 @@ $(function() {
 		},
 		// Extend vote(), update our details and bar
 		vote: function(ev, vote) {
-			console.log("this = ", this);
 			this.parent( ev, vote );
 			this._updateBenis();
 		},
