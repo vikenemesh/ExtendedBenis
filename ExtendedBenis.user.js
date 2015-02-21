@@ -13,7 +13,7 @@
 
 $(function() {
 	var tmpl_css = ".ext-vote { color: #BBB; }";
-	var tmpl_hack = '<span class="ext-vote">{item.up} Up, {item.down} Down</span>'
+	var tmpl_hack = '<span class="ext-vote">{item.up} Up, {item.down} Down</span>';
 	var tmpl_old = p.View.Stream.Item.prototype.template;
 	var tmpl_new = tmpl_old.replace(/(<\?js print.*?\?><\/span>)/, "$1 "+tmpl_hack);
 
