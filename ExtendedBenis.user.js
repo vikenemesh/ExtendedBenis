@@ -51,7 +51,7 @@ $(function() {
 			this._updateBenis();
 		},
 		_updateBenis: function() {
-			$('.ext-vote').text( this.data.item.up + ' [+] // ' + this.data.item.down + ' [-]' );
+			$('.ext-vote').text( this.data.item.up + ' Up, ' + this.data.item.down + ' Down' );
 			this._updateBar();
 		},
 		_updateBar: function() {
