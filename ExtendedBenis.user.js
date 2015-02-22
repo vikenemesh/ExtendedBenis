@@ -1,6 +1,6 @@
-// ==UserScript==
+﻿// ==UserScript==
 // @name		ExtendedBenis
-// @author		vikenzor, holzmaster
+// @author		vikenzor, holzmaster, Chromegear
 // @namespace	vehacks
 // @include		*pr0gramm.com*
 // @version		1.6.1
@@ -13,18 +13,21 @@
 // ==/UserScript==
 
 $(function() {
+	var bar_width = 100;
+	var bar_green = '#A7D713';
+	var bar_red   = '#EE4D2E';
+	var bar_grey  = '#55585A';
+	
 	// Define the elements we're going to hack in
 	var tmpl_hack =
-		'<span class="ext-vote">{item.up} Up, {item.down} Down</span>' +
-		'<div class="ext-bar"><div class="ext-bar-item-up">&nbsp;</div><div class="ext-bar-item-down">&nbsp;</div></div>';
+		'<div class="ext-bar"><div class="ext-bar-item-up">&nbsp;</div><div class="ext-bar-item-down">&nbsp;</div></div>' + 
+		'<span class="ext-vote">{item.up} Up, {item.down} Down</span>';
 	
 	// Build some custom CSS-Rules
 	var tmpl_css =
 		'.ext-vote { color: #BBB; } ' +
-		'.ext-bar { overflow: hidden; } ' +
+		'.ext-bar { overflow: hidden; padding-top: 5px; padding-bottom: 2px; } ' +
 		'.ext-bar div { height: 2px; float: left; transition: width 0.2s ease-out; } ' +
-		'.ext-bar-item-up { background-color: #A7D713; } ' +
-		'.ext-bar-item-down { background-color: #6C432B; } ' +
 		'.item-vote * { text-align: left !important; } ';
 
 	// Inject the new stuff into the "p.View.Stream.Item" template
@@ -48,7 +51,7 @@ $(function() {
 			this._updateBenis();
 		},
 		_updateBenis: function() {
-			$('.ext-vote').text( this.data.item.up + ' Up, ' + this.data.item.down + ' Down' );
+			$('.ext-vote').text( this.data.item.up + ' [+] // ' + this.data.item.down + ' [-]' );
 			this._updateBar();
 		},
 		_updateBar: function() {
@@ -58,11 +61,20 @@ $(function() {
 			} else {
 				$('.ext-bar').css( 'opacity', 1 );
 
-				var ratio_up = this.data.item.up / total * 100;
-				var ratio_down = 100.0 - ratio_up;
+				var ratio_up = this.data.item.up / total;
+				var ratio_down = 1.0 - ratio_up;
+				
+				// Grey downvote-bar if more up- than downvotes
+				if(ratio_up>=ratio_down) { 
+					$('.ext-bar-item-up').css('background-color', bar_green);
+					$('.ext-bar-item-down').css('background-color', bar_grey);
+				} else { // Grey upvote-bar if more down- than upvotes
+					$('.ext-bar-item-up').css('background-color', bar_grey);
+					$('.ext-bar-item-down').css('background-color', bar_red);
+				}
 
-				$('.ext-bar-item-up').css( 'width', ratio_up + "%" );
-				$('.ext-bar-item-down').css( 'width', ratio_down + "%" );
+				$('.ext-bar-item-up').css( 'width', Math.round(ratio_up * bar_width) + "px" );
+				$('.ext-bar-item-down').css( 'width', Math.round(ratio_down * bar_width) + "px" );
 			}
 		}
 	});
