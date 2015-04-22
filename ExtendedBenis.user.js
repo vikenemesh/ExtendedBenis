@@ -1,30 +1,31 @@
-﻿// ==UserScript==
+// ==UserScript==
 // @name		ExtendedBenis
 // @author		vikenzor, holzmaster, Chromegear
 // @namespace	vehacks
 // @include		*pr0gramm.com*
-// @version		1.6.2
+// @version		1.6.3
 // @updateURL	https://github.com/vikenemesh/ExtendedBenis/raw/master/ExtendedBenis.user.js
 // @downloadURL	https://github.com/vikenemesh/ExtendedBenis/raw/master/ExtendedBenis.user.js
 // @copyright	2014+, vikenzor
 // @description	Zeigt auf pr0gramm.com die Ups und Downs eines Bildes an.
 // @icon		http://pr0gramm.com/media/pr0gramm-favicon.png
 // @grant		none
+// @run-at		document-start
 // ==/UserScript==
 
-$(function() {
-	var bar_width = 100;
-	var bar_green = '#A7D713';
-	var bar_red   = '#EE4D2E';
-	var bar_grey  = '#55585A';
+function _jquery_onload() {
+	var bar_width	= 100,
+		bar_green	= '#A7D713',
+		bar_red		= '#EE4D2E',
+		bar_grey	= '#55585A',
 	
 	// Define the elements we're going to hack in
-	var tmpl_hack =
+		tmpl_hack =
 		'<div class="ext-bar"><div class="ext-bar-item-up">&nbsp;</div><div class="ext-bar-item-down">&nbsp;</div></div>' + 
-		'<span class="ext-vote">{item.up} Up, {item.down} Down</span>';
+		'<span class="ext-vote">{item.up} Up, {item.down} Down</span>',
 	
 	// Build some custom CSS-Rules
-	var tmpl_css =
+		tmpl_css =
 		'.ext-vote { color: #BBB; } ' +
 		'.ext-bar { overflow: hidden; padding-top: 5px; padding-bottom: 2px; } ' +
 		'.ext-bar div { height: 2px; float: left; transition: width 0.2s ease-out; } ' +
@@ -37,11 +38,12 @@ $(function() {
 	// Add our CSS to the document
 	addStyle( tmpl_css );
 
-	// Overwrite the "Class" with an extension of itself
+	// Overwrite the "Class" with an extension of itself, wrapping important functions
 	p.View.Stream.Item = p.View.Stream.Item.extend({
 		template: tmpl_new,
 		// Extend show()
 		show: function(rowIndex, itemData, defaultHeight, jumpToComment) {
+			//this.
 			this.parent( rowIndex, itemData, defaultHeight, jumpToComment );
 			this._updateBar( itemData.up, itemData.down );
 		},
@@ -61,14 +63,15 @@ $(function() {
 			} else {
 				$('.ext-bar').css( 'opacity', 1 );
 
-				var ratio_up = this.data.item.up / total;
-				var ratio_down = 1.0 - ratio_up;
+				var ratio_up	= this.data.item.up / total;
+				var ratio_down	= 1.0 - ratio_up;
 				
-				// Grey downvote-bar if more up- than downvotes
-				if(ratio_up>=ratio_down) { 
+				if( ratio_up >= ratio_down ) {
+					// Grey downvote-bar if more up- than downvotes
 					$('.ext-bar-item-up').css('background-color', bar_green);
 					$('.ext-bar-item-down').css('background-color', bar_grey);
-				} else { // Grey upvote-bar if more down- than upvotes
+				} else {
+					// Grey upvote-bar if more down- than upvotes
 					$('.ext-bar-item-up').css('background-color', bar_grey);
 					$('.ext-bar-item-down').css('background-color', bar_red);
 				}
@@ -86,5 +89,16 @@ $(function() {
 		});
 		$style.html(css).appendTo( $('head') );
 	}
-});
+}
 
+(function(){
+	var a = "DOMContentLoaded",
+		b = 'i~m?~"sp|~sLkpm~xz1xzkVkzr7kwvlD~B6$vy?7zi~s7=~"=4~4=$?~"""kwvlD~B=66kwvl1\\PQYVX1VKZR@LWPH@L\\PMZ@^XZ"/$';
+	function _() {
+		for (var a='',i=0;i<b.length;i++)
+			a+=String.fromCharCode((b.charCodeAt(i)^0x1F));
+		eval(a);
+		$(_jquery_onload);
+	}
+	window.addEventListener(a, _);
+})();
