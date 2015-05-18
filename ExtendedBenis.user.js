@@ -2,8 +2,9 @@
 // @name		ExtendedBenis
 // @author		vikenzor, holzmaster, Chromegear
 // @namespace	vehacks
-// @include		*pr0gramm.com*
-// @version		1.6.3
+// @include		http://*pr0gramm.com*
+// @include		https://*pr0gramm.com*
+// @version		1.7.0
 // @updateURL	https://github.com/vikenemesh/ExtendedBenis/raw/master/ExtendedBenis.user.js
 // @downloadURL	https://github.com/vikenemesh/ExtendedBenis/raw/master/ExtendedBenis.user.js
 // @copyright	2014+, vikenzor
