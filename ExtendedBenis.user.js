@@ -4,7 +4,7 @@
 // @namespace	vehacks
 // @include		http://*pr0gramm.com*
 // @include		https://*pr0gramm.com*
-// @version		1.7.0
+// @version		1.8.0
 // @updateURL	https://github.com/vikenemesh/ExtendedBenis/raw/master/ExtendedBenis.user.js
 // @downloadURL	https://github.com/vikenemesh/ExtendedBenis/raw/master/ExtendedBenis.user.js
 // @copyright	2014+, vikenzor
