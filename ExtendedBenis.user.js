@@ -14,30 +14,34 @@
 // @run-at		document-start
 // ==/UserScript==
 
-function _jquery_onload() {
-	var bar_width	= 100,
-		bar_green	= '#A7D713',
-		bar_red		= '#EE4D2E',
-		bar_grey	= '#55585A',
-	
+function script_init() {
+	CONFIG.SHOW_SCORE_MIN_AGE = 0;
+
+	const bar_width = 100;
+	const bar_green = '#A7D713';
+	const bar_red = '#EE4D2E';
+	const bar_grey = '#55585A';
+
 	// Define the elements we're going to hack in
-		tmpl_hack =
-		'<div class="ext-bar"><div class="ext-bar-item-up">&nbsp;</div><div class="ext-bar-item-down">&nbsp;</div></div>' + 
-		'<span class="ext-vote">{item.up} Up, {item.down} Down</span>',
-	
+	const tmpl_hack =
+		'<div class="ext-bar"><div class="ext-bar-item-up">&nbsp;</div><div class="ext-bar-item-down">&nbsp;</div></div>' +
+		'<span class="ext-vote">{item.up} Up, {item.down} Down</span>';
+
 	// Build some custom CSS-Rules
-		tmpl_css =
+	const tmpl_css =
 		'.ext-vote { color: #BBB; } ' +
 		'.ext-bar { overflow: hidden; padding-top: 5px; padding-bottom: 2px; } ' +
 		'.ext-bar div { height: 2px; float: left; transition: width 0.2s ease-out; } ' +
 		'.item-vote * { text-align: left !important; } ';
 
 	// Inject the new stuff into the "p.View.Stream.Item" template
-	var tmpl_old = p.View.Stream.Item.prototype.template;
-	var tmpl_new = tmpl_old.replace( /(<\?js print.*?\?><\/span>)/, "$1 " + tmpl_hack );
+	const tmpl_old = p.View.Stream.Item.prototype.template;
+	const tmpl_new = tmpl_old.replace(/(<\?js print.*?\?><\/span>)/, "$1 " + tmpl_hack);
 
 	// Add our CSS to the document
-	addStyle( tmpl_css );
+	addGlobalStyle(tmpl_css);
+
+	const target = p.View.Stream.Item.TARGET;
 
 	// Overwrite the "Class" with an extension of itself, wrapping important functions
 	p.View.Stream.Item = p.View.Stream.Item.extend({
@@ -50,23 +54,23 @@ function _jquery_onload() {
 		},
 		// Extend vote(), update our details and bar
 		vote: function(ev, vote) {
-			this.parent( ev, vote );
+			this.parent(ev, vote);
 			this._updateBenis();
 		},
 		_updateBenis: function() {
-			$('.ext-vote').text( this.data.item.up + ' Up, ' + this.data.item.down + ' Down' );
+			$('.ext-vote').text(this.data.item.up + ' Up, ' + this.data.item.down + ' Down');
 			this._updateBar();
 		},
 		_updateBar: function() {
-			var total = this.data.item.up + this.data.item.down;
+			const total = this.data.item.up + this.data.item.down;
 			if( !total ) {
-				$('.ext-bar').css( 'opacity', 0 );
+				$('.ext-bar').css('opacity', 0);
 			} else {
-				$('.ext-bar').css( 'opacity', 1 );
+				$('.ext-bar').css('opacity', 1);
 
-				var ratio_up	= this.data.item.up / total;
-				var ratio_down	= 1.0 - ratio_up;
-				
+				const ratio_up = this.data.item.up / total;
+				const ratio_down = 1.0 - ratio_up;
+
 				if( ratio_up >= ratio_down ) {
 					// Grey downvote-bar if more up- than downvotes
 					$('.ext-bar-item-up').css('background-color', bar_green);
@@ -77,29 +81,20 @@ function _jquery_onload() {
 					$('.ext-bar-item-down').css('background-color', bar_red);
 				}
 
-				$('.ext-bar-item-up').css( 'width', Math.round(ratio_up * bar_width) + "px" );
-				$('.ext-bar-item-down').css( 'width', Math.round(ratio_down * bar_width) + "px" );
+				$('.ext-bar-item-up').css('width', Math.round(ratio_up * bar_width) + "px");
+				$('.ext-bar-item-down').css('width', Math.round(ratio_down * bar_width) + "px");
 			}
 		}
 	});
 
-	// Helper functions
-	function addStyle(css) {
-		var $style = $('<style>', {
-			type: 'text/css'
-		});
-		$style.html(css).appendTo( $('head') );
+	p.View.Stream.Item.TARGET = target;
+
+	function addGlobalStyle(css) {
+		const style = document.createElement('style');
+		style.type = 'text/css';
+		style.innerHTML = css;
+		document.head.appendChild(style);
 	}
 }
 
-(function(){
-	var a = "DOMContentLoaded",
-		b = 'i~m?~"sp|~sLkpm~xz1xzkVkzr7kwvlD~B6$vy?7zi~s7=~"=4~4=$?~"""kwvlD~B=66kwvl1\\PQYVX1VKZR@LWPH@L\\PMZ@^XZ"/$';
-	function _() {
-		for (var a='',i=0;i<b.length;i++)
-			a+=String.fromCharCode((b.charCodeAt(i)^0x1F));
-		eval(a);
-		$(_jquery_onload);
-	}
-	window.addEventListener(a, _);
-})();
+document.addEventListener("DOMContentLoaded", () => script_init());
