@@ -4,7 +4,7 @@
 // @namespace	vehacks
 // @include		http://*pr0gramm.com*
 // @include		https://*pr0gramm.com*
-// @version		1.8.0
+// @version		1.8.1
 // @updateURL	https://github.com/vikenemesh/ExtendedBenis/raw/master/ExtendedBenis.user.js
 // @downloadURL	https://github.com/vikenemesh/ExtendedBenis/raw/master/ExtendedBenis.user.js
 // @copyright	2014+, vikenzor
@@ -97,4 +97,8 @@ function script_init() {
 	}
 }
 
-document.addEventListener("DOMContentLoaded", () => script_init());
+if (document.readyState == "complete" || document.readyState == "loaded" || document.readyState == "interactive") {
+	script_init();
+} else {
+	document.addEventListener("DOMContentLoaded", () => script_init());
+}
