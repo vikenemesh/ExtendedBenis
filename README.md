@@ -12,3 +12,5 @@ Thanks to [holzmaster](https://github.com/holzmaster) for helping with maintaini
 Before you install, you need Greasemonkey or Tampermonkey. If you have one of those, click this link:
 
 [`https://raw.githubusercontent.com/vikenemesh/ExtendedBenis/master/ExtendedBenis.user.js`](https://raw.githubusercontent.com/vikenemesh/ExtendedBenis/master/ExtendedBenis.user.js)
+Or when the raw link to Github doesn't work, try my github.io page
+[`https://vikenemesh.github.io/ExtendedBenis.user.js`](https://vikenemesh.github.io/ExtendedBenis.user.js)
