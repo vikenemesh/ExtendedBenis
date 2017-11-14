@@ -6,12 +6,12 @@
 // @include		https://*pr0gramm.com*
 // @exclude		http://full.pr0gramm.com*
 // @exclude		https://full.pr0gramm.com*
-// @version		2.0.0
+// @version		2.0.2
 // @updateURL	https://github.com/vikenemesh/ExtendedBenis/raw/master/ExtendedBenis.user.js
 // @downloadURL	https://github.com/vikenemesh/ExtendedBenis/raw/master/ExtendedBenis.user.js
 // @description	Zeigt auf pr0gramm.com die Ups und Downs eines Bildes an.
 // @icon		http://pr0gramm.com/media/pr0gramm-favicon.png
-// @grant		none
+// @grant		unsafeWindow
 // @run-at		document-end
 // ==/UserScript==
 
@@ -22,8 +22,8 @@ function script_init(ev) {
 	if(mutex) {
 		return;
 	}
+
 	mutex = true;
-	console.log("script_init() // unsafeWindow.CONFIG = ", unsafeWindow.CONFIG, " // unsafeWindow = ", unsafeWindow, "  // ev = ", ev);
 
 	const bar_width = 100;
 	const bar_green = '#A7D713';
