@@ -6,18 +6,24 @@
 // @include		https://*pr0gramm.com*
 // @exclude		http://full.pr0gramm.com*
 // @exclude		https://full.pr0gramm.com*
-// @version		1.8.2
+// @version		2.0.0
 // @updateURL	https://github.com/vikenemesh/ExtendedBenis/raw/master/ExtendedBenis.user.js
 // @downloadURL	https://github.com/vikenemesh/ExtendedBenis/raw/master/ExtendedBenis.user.js
-// @copyright	2014+, vikenzor
 // @description	Zeigt auf pr0gramm.com die Ups und Downs eines Bildes an.
 // @icon		http://pr0gramm.com/media/pr0gramm-favicon.png
 // @grant		none
-// @run-at		document-start
+// @run-at		document-end
 // ==/UserScript==
 
-function script_init() {
-	CONFIG.SHOW_SCORE_MIN_AGE = 0;
+(function() {
+var mutex = false;
+
+function script_init(ev) {
+	if(mutex) {
+		return;
+	}
+	mutex = true;
+	console.log("script_init() // unsafeWindow.CONFIG = ", unsafeWindow.CONFIG, " // unsafeWindow = ", unsafeWindow, "  // ev = ", ev);
 
 	const bar_width = 100;
 	const bar_green = '#A7D713';
@@ -37,72 +43,75 @@ function script_init() {
 		'.item-vote * { text-align: left !important; } ';
 
 	// Inject the new stuff into the "p.View.Stream.Item" template
-	const tmpl_old = p.View.Stream.Item.prototype.template;
+	const tmpl_old = unsafeWindow.p.View.Stream.Item.prototype.template;
 	const tmpl_new = tmpl_old.replace(/(<\?js print.*?\?><\/span>)/, "$1 " + tmpl_hack);
 
 	// Add our CSS to the document
 	addGlobalStyle(tmpl_css);
 
-	const target = p.View.Stream.Item.TARGET;
-
 	// Overwrite the "Class" with an extension of itself, wrapping important functions
-	p.View.Stream.Item = p.View.Stream.Item.extend({
-		template: tmpl_new,
-		// Extend show()
-		show: function(rowIndex, itemData, defaultHeight, jumpToComment) {
-			//this.
-			this.parent( rowIndex, itemData, defaultHeight, jumpToComment );
-			this._updateBar( itemData.up, itemData.down );
-		},
-		// Extend vote(), update our details and bar
-		vote: function(ev, vote) {
-			this.parent(ev, vote);
-			this._updateBenis();
-		},
-		_updateBenis: function() {
-			$('.ext-vote').text(this.data.item.up + ' Up, ' + this.data.item.down + ' Down');
-			this._updateBar();
-		},
-		_updateBar: function() {
-			const total = this.data.item.up + this.data.item.down;
-			if( !total ) {
-				$('.ext-bar').css('opacity', 0);
-			} else {
-				$('.ext-bar').css('opacity', 1);
-
-				const ratio_up = this.data.item.up / total;
-				const ratio_down = 1.0 - ratio_up;
-
-				if( ratio_up >= ratio_down ) {
-					// Grey downvote-bar if more up- than downvotes
-					$('.ext-bar-item-up').css('background-color', bar_green);
-					$('.ext-bar-item-down').css('background-color', bar_grey);
-				} else {
-					// Grey upvote-bar if more down- than upvotes
-					$('.ext-bar-item-up').css('background-color', bar_grey);
-					$('.ext-bar-item-down').css('background-color', bar_red);
-				}
-
-				$('.ext-bar-item-up').css('width', Math.round(ratio_up * bar_width) + "px");
-				$('.ext-bar-item-down').css('width', Math.round(ratio_down * bar_width) + "px");
-			}
-		}
-	});
-
-	p.View.Stream.Item.TARGET = target;
+	// Because of Firefox 57 and GreaseMonkey 4.0 we do this in an eval...
+	window.eval([
+"		CONFIG.SHOW_SCORE_MIN_AGE = 0;",
+"		const target = p.View.Stream.Item.TARGET;",
+"		p.View.Stream.Item = p.View.Stream.Item.extend({",
+"			template: '" + tmpl_new + "',",
+"			// Extend show()",
+"			show: function(rowIndex, itemData, defaultHeight, jumpToComment) {",
+"				//this.",
+"				this.parent( rowIndex, itemData, defaultHeight, jumpToComment );",
+"				this._updateBar( itemData.up, itemData.down );",
+"			},",
+"			// Extend vote(), update our details and bar",
+"			vote: function(ev, vote) {",
+"				this.parent(ev, vote);",
+"				this._updateBenis();",
+"			},",
+"			_updateBenis: function() {",
+"				$('.ext-vote').text(this.data.item.up + ' Up, ' + this.data.item.down + ' Down');",
+"				this._updateBar();",
+"			},",
+"			_updateBar: function() {",
+"				const total = this.data.item.up + this.data.item.down;",
+"				if( !total ) {",
+"					$('.ext-bar').css('opacity', 0);",
+"				} else {",
+"					$('.ext-bar').css('opacity', 1);",
+"",
+"					const ratio_up = this.data.item.up / total;",
+"					const ratio_down = 1.0 - ratio_up;",
+"",
+"					if( ratio_up >= ratio_down ) {",
+"						// Grey downvote-bar if more up- than downvotes",
+"						$('.ext-bar-item-up').css('background-color', '"+bar_green+"');",
+"						$('.ext-bar-item-down').css('background-color', '"+bar_grey+"');",
+"					} else {",
+"						// Grey upvote-bar if more down- than upvotes",
+"						$('.ext-bar-item-up').css('background-color', '"+bar_grey+"');",
+"						$('.ext-bar-item-down').css('background-color', '"+bar_red+"');",
+"					}",
+"",
+"					$('.ext-bar-item-up').css('width', Math.round(ratio_up * "+bar_width+") + 'px');",
+"					$('.ext-bar-item-down').css('width', Math.round(ratio_down * "+bar_width+") + 'px');",
+"				}",
+"			}",
+"		});",
+"",
+"		p.View.Stream.Item.TARGET = target;"
+	].join("\n"));
 
 	function addGlobalStyle(css) {
-		const style = document.createElement('style');
+		const style = unsafeWindow.document.createElement('style');
 		style.type = 'text/css';
 		style.innerHTML = css;
-		document.head.appendChild(style);
+		unsafeWindow.document.head.appendChild(style);
 	}
 }
 
-console.log("Hello!");
-
-if (document.readyState == "complete" || document.readyState == "loaded" || document.readyState == "interactive") {
+if (unsafeWindow.document.readyState == "complete" || unsafeWindow.document.readyState == "loaded" || unsafeWindow.document.readyState == "interactive") {
 	script_init();
 } else {
-	document.addEventListener("DOMContentLoaded", () => script_init());
+	unsafeWindow.document.addEventListener("DOMContentLoaded", (ev) => script_init(ev));
 }
+
+})();
