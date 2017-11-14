@@ -6,7 +6,7 @@
 // @include		https://*pr0gramm.com*
 // @exclude		http://full.pr0gramm.com*
 // @exclude		https://full.pr0gramm.com*
-// @version		2.0.2
+// @version		2.0.3
 // @updateURL	https://vikenemesh.github.io/ExtendedBenis.user.js
 // @downloadURL	https://vikenemesh.github.io/ExtendedBenis.user.js
 // @description	Zeigt auf pr0gramm.com die Ups und Downs eines Bildes an.
