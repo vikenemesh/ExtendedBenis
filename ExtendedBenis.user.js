@@ -6,7 +6,7 @@
 // @include		https://*pr0gramm.com*
 // @exclude		http://full.pr0gramm.com*
 // @exclude		https://full.pr0gramm.com*
-// @version		2.0.3
+// @version		2.0.4
 // @updateURL	https://vikenemesh.github.io/ExtendedBenis.user.js
 // @downloadURL	https://vikenemesh.github.io/ExtendedBenis.user.js
 // @description	Zeigt auf pr0gramm.com die Ups und Downs eines Bildes an.
@@ -44,7 +44,7 @@ function script_init(ev) {
 
 	// Inject the new stuff into the "p.View.Stream.Item" template
 	const tmpl_old = unsafeWindow.p.View.Stream.Item.prototype.template;
-	const tmpl_new = tmpl_old.replace(/(<\?js print.*?\?><\/span>)/, "$1 " + tmpl_hack);
+	const tmpl_new = tmpl_old.replace(/(<\?js print.*?\?><\/span>)/, "$1 " + tmpl_hack).replace(/'/g, "\\'");
 
 	// Add our CSS to the document
 	addGlobalStyle(tmpl_css);
